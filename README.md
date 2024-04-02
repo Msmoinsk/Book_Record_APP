@@ -1,9 +1,9 @@
 # Book Record management app
 
 Server Components 
-    >> Storing certain book data
-    >> User Registrations
-    >> Subscriptions -- Time durations to access the books
+-- Storing certain book data
+-- User Registrations
+-- Subscriptions -- Time durations to access the books
 
 This is the book record management API Server / Backend for library system or management of records or manuals or books
 
