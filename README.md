@@ -1,9 +1,9 @@
 # Book Record management app
 
 Server Components 
--- Storing certain book data
--- User Registrations
--- Subscriptions -- Time durations to access the books
+- Storing certain book data
+- User Registrations
+- Subscriptions -- Time durations to access the books
 
 This is the book record management API Server / Backend for library system or management of records or manuals or books
 
@@ -27,3 +27,17 @@ GET     : Get user subscription details
             >> Data subscriptions
             >> Valid till
             >> Fine on that User
+
+### /books 
+GET     : Get all the books 
+POST    : Create / Add Books 
+
+### /books/{book_id}
+GET     : Get a book by ID
+PUT     : Update a book by its ID
+
+### /books/issued
+GET     : Get all th issued books
+
+### /books/issued/withfine
+GET     : Get all issued books with the fine
