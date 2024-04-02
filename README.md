@@ -1,4 +1,6 @@
 # Book Record management app
-## Stage 1 Checking
-### Testing Fetch command
-Starting the project
+
+Server  >> Storing certain book data
+        >> User Registrations
+        >> Subscriptions -- Time durations to access the books
+        
