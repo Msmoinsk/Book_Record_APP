@@ -11,6 +11,25 @@ This is the book record management API Server / Backend for library system or ma
 - User : Issued on 06/01/2024 --  Subscript for 6 months -- return on 06/06/2024
 - Then : delay or 3 days will be this === for 1:=50 so (50*3)
 
+## Subscription 
+- 3 months (basic)
+- 6 months (standard)
+- 12 months (premium)
+
+if the subscription type is standard && if the subscription date is 06/01/2024
+- then subscription valid till 06/06/2024
+
+- => within subscription date >> if e miss the renewal >> 50/- day
+- => subscription date is also been missed >> adn also missed the renewal >> 100 + 50/- day
+
+MEANS 
+- missed by renewal date >> 50/-
+- missed by subscription date >> 100/-
+- missed by renewal && subscription date >> 100 + 50 /-
+
+
+
+
 ## Routes and Endpoints
 
 ### /users
