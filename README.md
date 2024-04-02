@@ -1,9 +1,9 @@
 # Book Record management app
 
 Server Components 
->> Storing certain book data
->> User Registrations
->> Subscriptions -- Time durations to access the books
+    >> Storing certain book data
+    >> User Registrations
+    >> Subscriptions -- Time durations to access the books
 
 This is the book record management API Server / Backend for library system or management of records or manuals or books
 
@@ -21,3 +21,9 @@ GET     : Get all the information of different users
 GET     : Get a user data by ID
 PUT     : Update the user by their ID (Only some data updations)
 DELETE  : Delete that user by ID (Check If he/she still have an issued book) && (Check if is there any fine to be paid)
+
+### /users/subsciption-details/{User_id}
+GET     : Get user subscription details
+            >> Data subscriptions
+            >> Valid till
+            >> Fine on that User
