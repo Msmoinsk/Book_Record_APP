@@ -146,3 +146,44 @@ router.delete("/:id", (req,res) => {
         data:users
     })
 })
+
+
+/**
+ * Route : /users/subscription/:id
+ * Method : GET
+ * Description :user subscription by id
+ * Access : Public
+ * Parameter : ID {if in url we sent the ID then it will be the [para : ID]}
+ */
+router.get("/subscription/:id", (req, res) => {
+    const { id } = req.params,
+    user = users.find((usr) => usr.id === id)
+
+    if(!user){
+        return res.status(404).json({
+            success:false,
+            message:"User with the ID did not exist"
+        })
+    }
+    const getDateInDays = (data = "") => {
+        let date 
+        if(data === ""){
+            date = new Date()
+        } else {
+            date = new Date(data)
+        }
+
+        let days = Math.floor(data / (1000 * 60 * 60 * 24))
+        return days
+    }
+    const subcriptionType = (date) => {
+        if(user.subscriptionType == "Basic"){
+            date = date + 90
+        } else if (user.subscriptionType == "Standard"){
+            date = date + 180
+        } else if(user.subscriptionType == "Premium"){
+            date = date + 365
+        }
+        return date
+    }
+}) 

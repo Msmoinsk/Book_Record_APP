@@ -87,4 +87,67 @@ router.get("/:id", (req, res) => {
  * Description : Insert a new Book to the library
  * Access : Public
  * Parameter : None {if in url we sent the ID then it will be the [para : ID]}
+ * data : books(parameter)
  */
+
+router.post("/", (req, res) => {
+    const  data  = req.body,
+    book = books.find((select_book)  => select_book.id === data.id)
+
+    if(!data || Object.keys(data).length == 0){
+        return res.status(404).json({
+            success:false,
+            message:"No data to add a book"
+        })
+    }
+    if(book){
+        return res.status(402).json({
+            success:false,
+            message:"This Book ID already exist"
+        })
+    }
+    
+    const allBoks = books
+    allBoks.push(data)
+    return res.status(201).json({
+        success:true,
+        message:"Book Been Added.",
+        data:allBoks
+    })
+})
+
+/**
+ * Route : /books/:ID
+ * Method : PUT
+ * Description : Insert a new Book to the library
+ * Access : Public
+ * Parameter : Id {if in url we sent the ID then it will be the [para : ID]}
+ * data : books(parameter)
+ */
+router.put("/:id", (req, res) => {
+    const { id } = req.params,
+    book = books.find((single_book) => single_book.id === id),
+    data = req.body
+
+    if(!book){
+        return res.status(404).json({
+            success:false,
+            message:"No Such book is their"
+        })
+    }
+    
+    const updateBookData = books.map((updateBook) => {
+        if(updateBook.id === id){
+            return {
+                ...updateBook,
+                ...data
+            }
+        }
+        return updateBook
+    })
+    return res.status(200).json({
+        success:true,
+        message:"Book updated",
+        data:updateBookData
+    })
+})
