@@ -55,6 +55,56 @@ router.get("/issued", (req, res) => {
     })
 })
 
+/**
+ * Route : /books/issued/withfine
+ * Method : GET
+ * Description : Get issued book
+ * Access : Public
+ * Parameter : none {if in url we sent the ID then it will be the [para : ID]}
+ */
+
+router.get("/issued/withfine", (req, res) => {
+    const userIssuedFilter = users.filter((usr) => {
+        if(usr.issuedBook) return usr
+    })
+    const issuedWithFine = []
+    userIssuedFilter.forEach((user) => {
+
+        const getDaysFormDate = (data) => {
+            let date 
+            if(!data){
+                date = new Date()
+            } else {
+                date = new Date(data)
+            }
+
+            let days = Math.floor(date / (1000 * 60 * 60 * 24))
+            return days
+        }
+        let return_Date = getDaysFormDate(user.returnDate)
+        let current_Date = getDaysFormDate()
+
+        let bookUserIssued = books.find((book) => book.id === user.issuedBook)
+        bookUserIssued.issueBy = user.name
+        bookUserIssued.issueDate = user.issuedDate
+        bookUserIssued.returnDate = user.returnDate
+
+        bookUserIssued.fineForTheBook = return_Date <= current_Date ? `Rs. ${(current_Date - return_Date) * 50}` : 0
+
+        issuedWithFine.push(bookUserIssued)
+    })
+    if(!issuedWithFine){
+        res.status(404).json({
+            success:false,
+            message:"No book with fine found"
+        })
+    }
+    res.status(200).json({
+        success:true,
+        message:"The fine System",
+        data : issuedWithFine
+    })
+})
 
 /**
  * Route : /books/:id
