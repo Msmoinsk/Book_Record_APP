@@ -2,6 +2,11 @@ const express = require("express");
 const app = express();
 app.use(express.json());
 
+const dotenv = require("dotenv")
+const DbConnection = require("./dataBaseConnection.js")
+dotenv.config()
+
+DbConnection()
 
 const userRouter = require("./routes/users"),
 booksRoutes = require("./routes/books.js")
