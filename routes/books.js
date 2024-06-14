@@ -112,7 +112,9 @@ router.post("/", (req, res) => {
     return res.status(201).json({
         success:true,
         message:"Book Been Added.",
-        data:allBoks
+        data:books   
+// array [] that is assign to books ahve also asign to the allnoks so 1 array has been asign to 2 varible.
+// Changes done on any of it will affect the array.
     })
 })
 

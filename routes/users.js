@@ -155,7 +155,7 @@ router.delete("/:id", (req,res) => {
  * Access : Public
  * Parameter : ID {if in url we sent the ID then it will be the [para : ID]}
  */
-router.get("/subscription/:id", (req, res) => {
+router.get("/subsciption-details/:id", (req, res) => {
     const { id } = req.params,
     user = users.find((usr) => usr.id === id)
 
@@ -165,25 +165,68 @@ router.get("/subscription/:id", (req, res) => {
             message:"User with the ID did not exist"
         })
     }
-    const getDateInDays = (data = "") => {
+    const getDateInDays = (data) => {
         let date 
-        if(data === ""){
+        if(!data){
             date = new Date()
         } else {
             date = new Date(data)
         }
 
-        let days = Math.floor(data / (1000 * 60 * 60 * 24))
+        let days = Math.floor(date / (1000 * 60 * 60 * 24))
         return days
     }
-    const subcriptionType = (date) => {
-        if(user.subscriptionType == "Basic"){
-            date = date + 90
-        } else if (user.subscriptionType == "Standard"){
-            date = date + 180
-        } else if(user.subscriptionType == "Premium"){
-            date = date + 365
+    const subcriptionType = (day) => {
+        if(user.subscriptionType === "Basic"){
+            day = day + 90
+        } else if (user.subscriptionType === "Standard"){
+            day = day + 180
+        } else if(user.subscriptionType === "Premium"){
+            day = day + 365
         }
-        return date
+        return day
     }
+
+    // Jan 1 1970 UTC     ->   Day you take the book { DUMMY VALUE}
+    // calculating the Renew Days : books Need to be renewed
+    let return_Date = getDateInDays(user.returnDate)   // end of return day
+    let currentDate = getDateInDays()   // Currently day you are at
+
+
+    // User Subciption to access the book
+    let subscription_Dates = getDateInDays(user.subscriptionDate)   // The Day you Subscribe yourself
+    // subscriptionDates WILL carry the DAYS in number i.e Start to end amount of DAYS "173276"
+    // So when this is transfer in the { subcriptionType(subscriptionDates) } it send DAYS value "173276" 
+    let subcriptionExpire = subcriptionType(subscription_Dates) // The Day Your Subscription will end
+
+    // NOTE :- That the day Work like " [ month / days / years ] " 
+
+    const data = {
+        ...user,
+        isSubcriptionExpired : subcriptionExpire <= currentDate,
+        daysLeftForExpiration : subcriptionExpire <= currentDate ? `Days Passed - ${currentDate - subcriptionExpire}` : subcriptionExpire - currentDate,
+        bookReturnDayLeft : return_Date < currentDate ? `Days Passed - ${currentDate - return_Date}` : return_Date  - currentDate,
+        fine : 
+            return_Date < currentDate 
+                ? subcriptionExpire <= currentDate 
+                    ? 100 
+                : 50 
+            : 0,
+            /**
+             * IF( returnDate < currentDate ){
+             *      IF ( subcriptionExpire <= currentDate ){
+             *          100
+             *      }
+             *      50
+             * } else {
+             *      0
+             * } 
+             * */ 
+    }
+
+    return res.status(200).json({
+        success:true,
+        message:"This is Subcription section",
+        data:data
+    })
 }) 
