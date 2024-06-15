@@ -2,12 +2,14 @@ const express = require("express");
 const app = express();
 app.use(express.json());
 
+// Mongo Db Connection URL Config
 const dotenv = require("dotenv")
-const DbConnection = require("./dataBaseConnection.js")
 dotenv.config()
-
+// Data Base connection file
+const DbConnection = require("./dataBaseConnection.js")
 DbConnection()
 
+// Route For the Backend
 const userRouter = require("./routes/users"),
 booksRoutes = require("./routes/books.js")
 

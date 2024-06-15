@@ -7,6 +7,13 @@ const router = express.Router()
 // Modal
 const { UserModal, BookModal } = require("../modals/index-modal")
 
+// Controllers
+const { 
+    getAllBooks, 
+    getSingleBookById, 
+    getAllIssuedBooks, 
+} = require("../controller/book-controller")
+
 module.exports = router
 
 
@@ -17,13 +24,15 @@ module.exports = router
  * Access : Public
  * Parameter : None {if in url we sent the ID then it will be the [para : ID]}
  */
-router.get("/", (req,res) => {
-    res.status(200).json({
-        success : true,
-        messge:"Got all the Books",
-        data : books
-    })
-})
+router.get("/", getAllBooks)
+
+// router.get("/", (req,res) => {
+//     res.status(200).json({
+//         success : true,
+//         messge:"Got all the Books",
+//         data : books
+//     })
+// })
 
 /**
  * Route : /books/issued
@@ -32,31 +41,32 @@ router.get("/", (req,res) => {
  * Access : Public
  * Parameter : none {if in url we sent the ID then it will be the [para : ID]}
  */
-router.get("/issued", (req, res) => {
-    const userBookIssued = users.filter((user) => {
-        if(user.issuedBook) return user
-    })
-    const issuedBooks = []
-    userBookIssued.forEach((issedUser) => {
-        const book = books.find((issueBook) => issueBook.id === issedUser.issuedBook)
-        book.issueBy = issedUser.name
-        book.issueDate = issedUser.issuedDate
-        book.returnDate = issedUser.returnDate
+router.get("/issued", getAllIssuedBooks)
+// router.get("/issued", (req, res) => {
+//     const userBookIssued = users.filter((user) => {
+//         if(user.issuedBook) return user
+//     })
+//     const issuedBooks = []
+//     userBookIssued.forEach((issedUser) => {
+//         const book = books.find((issueBook) => issueBook.id === issedUser.issuedBook)
+//         book.issueBy = issedUser.name
+//         book.issueDate = issedUser.issuedDate
+//         book.returnDate = issedUser.returnDate
 
-        issuedBooks.push(book)
-    })
-    if(issuedBooks.length === 0){
-        return res.status(404).json({
-            success:false,
-            message:"no book found"
-        })
-    }
-    return res.status(200).json({
-        success:true,
-        message:"Book found",
-        data:issuedBooks
-    })
-})
+//         issuedBooks.push(book)
+//     })
+//     if(issuedBooks.length === 0){
+//         return res.status(404).json({
+//             success:false,
+//             message:"no book found"
+//         })
+//     }
+//     return res.status(200).json({
+//         success:true,
+//         message:"Book found",
+//         data:issuedBooks
+//     })
+// })
 
 /**
  * Route : /books/issued/withfine
@@ -116,22 +126,24 @@ router.get("/issued/withfine", (req, res) => {
  * Access : Public
  * Parameter : id {if in url we sent the ID then it will be the [para : ID]}
  */
-router.get("/:id", (req, res) => {
-    const { id } = req.params,
-    book = books.find((boak) => boak.id === id)
+router.get("/:id", getSingleBookById)
 
-    if(!book){
-        return res.status(404).json({
-            success:false,
-            messge:"Book not found"
-        })
-    }
-    return res.status(200).json({
-        success:true,
-        message:"Book found",
-        data:book
-    })
-})
+// router.get("/:id", (req, res) => {
+//     const { id } = req.params,
+//     book = books.find((boak) => boak.id === id)
+
+//     if(!book){
+//         return res.status(404).json({
+//             success:false,
+//             messge:"Book not found"
+//         })
+//     }
+//     return res.status(200).json({
+//         success:true,
+//         message:"Book found",
+//         data:book
+//     })
+// })
 
 
 /**
