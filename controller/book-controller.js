@@ -1,5 +1,4 @@
 // Modal
-const bookModals = require("../modals/book-modals")
 const { UserModal, BookModal } = require("../modals/index-modal")
 
 exports.getAllBooks = async(req,res) => {
