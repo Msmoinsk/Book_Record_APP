@@ -60,3 +60,32 @@ MEANS
 
 ### /books/issued/withfine
 - GET     : Get all issued books with the fine
+
+
+# Backend + Database
+## MVC arch
+
+   >> M : Modal - Bundle the View $ controller / It depicts the structure of a MongoDB collection
+   >> V : View - Write the frontend part for the user REACT JS / Angular JS
+   >> C : Controller - Brain of the App / Logical part of Routes , All API are defined under this
+        >> books.controllers.js
+        >> users.controller.js
+
+
+## Schema vs Modal
+
+<< schema :- id: String
+             name : String
+             age : Number
+             Gender : Char || varChar()
+
+<< Modal :- id: 123
+            name: moin
+            age: 23
+            gender: "M"
+
+## foreing keys :
+<< Referential Integrity
+
+Users Table                  | Books Table
+issedBook : 2(Foreing Key)   | issuedBook : 2(Primary Key)

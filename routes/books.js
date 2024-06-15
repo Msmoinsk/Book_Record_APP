@@ -4,6 +4,9 @@ const { books } = require("../data/books.json"),
 
 const router = express.Router()
 
+// Modal
+const { UserModal, BookModal } = require("../modals/index-modal")
+
 module.exports = router
 
 
