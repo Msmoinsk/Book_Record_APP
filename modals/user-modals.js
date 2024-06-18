@@ -22,6 +22,10 @@ const userSchema = new Schema ({
         required: false,
         ref: "Book",
     },
+    issuedDate: {
+        type: String,
+        required: false,
+    },
     returnDate: {
         type: String,
         required: false,

@@ -11,11 +11,11 @@ const { UserModal, BookModal } = require("../modals/index-modal")
 const { 
     getAllBooks, 
     getSingleBookById, 
-    getAllIssuedBooks, 
+    getAllIssuedBooks,
+    addNewBook,
 } = require("../controller/book-controller")
 
 module.exports = router
-
 
 /**
  * Route : /books
@@ -25,7 +25,6 @@ module.exports = router
  * Parameter : None {if in url we sent the ID then it will be the [para : ID]}
  */
 router.get("/", getAllBooks)
-
 // router.get("/", (req,res) => {
 //     res.status(200).json({
 //         success : true,
@@ -75,7 +74,6 @@ router.get("/issued", getAllIssuedBooks)
  * Access : Public
  * Parameter : none {if in url we sent the ID then it will be the [para : ID]}
  */
-
 router.get("/issued/withfine", (req, res) => {
     const userIssuedFilter = users.filter((usr) => {
         if(usr.issuedBook) return usr
@@ -127,7 +125,6 @@ router.get("/issued/withfine", (req, res) => {
  * Parameter : id {if in url we sent the ID then it will be the [para : ID]}
  */
 router.get("/:id", getSingleBookById)
-
 // router.get("/:id", (req, res) => {
 //     const { id } = req.params,
 //     book = books.find((boak) => boak.id === id)
@@ -154,34 +151,34 @@ router.get("/:id", getSingleBookById)
  * Parameter : None {if in url we sent the ID then it will be the [para : ID]}
  * data : books(parameter)
  */
+router.post("/", addNewBook)
+// router.post("/", (req, res) => {
+//     const  data  = req.body,
+//     book = books.find((select_book)  => select_book.id === data.id)
 
-router.post("/", (req, res) => {
-    const  data  = req.body,
-    book = books.find((select_book)  => select_book.id === data.id)
-
-    if(!data || Object.keys(data).length == 0){
-        return res.status(404).json({
-            success:false,
-            message:"No data to add a book"
-        })
-    }
-    if(book){
-        return res.status(402).json({
-            success:false,
-            message:"This Book ID already exist"
-        })
-    }
+//     if(!data || Object.keys(data).length == 0){
+//         return res.status(404).json({
+//             success:false,
+//             message:"No data to add a book"
+//         })
+//     }
+//     if(book){
+//         return res.status(402).json({
+//             success:false,
+//             message:"This Book ID already exist"
+//         })
+//     }
     
-    const allBoks = books
-    allBoks.push(data)
-    return res.status(201).json({
-        success:true,
-        message:"Book Been Added.",
-        data:books   
-// array [] that is assign to books ahve also asign to the allnoks so 1 array has been asign to 2 varible.
-// Changes done on any of it will affect the array.
-    })
-})
+//     const allBoks = books
+//     allBoks.push(data)
+//     return res.status(201).json({
+//         success:true,
+//         message:"Book Been Added.",
+//         data:books   
+// // array [] that is assign to books ahve also asign to the allnoks so 1 array has been asign to 2 varible.
+// // Changes done on any of it will affect the array.
+//     })
+// })
 
 /**
  * Route : /books/:ID
