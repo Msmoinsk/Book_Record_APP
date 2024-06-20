@@ -10,7 +10,17 @@ class IssuedBook {
     returnDate;
 
     // Whenever  create obj , the constructor gets invoked = Parametersized Constructors
-    constructor(user){
+    constructor(user, returnDt, currentDt){
+        if (!returnDt && !currentDt){
+            this._id = user.issuedBook._id
+            this.name = user.issuedBook.name
+            this.genre = user.issuedBook.genre
+            this.price = user.issuedBook.price
+            this.publisher = user.issuedBook.publisher
+            this.issuedBy = user.name
+            this.issuedDate = user.issuedDate
+            this.returnDate = user.returnDate
+        }
         this._id = user.issuedBook._id
         this.name = user.issuedBook.name
         this.genre = user.issuedBook.genre
@@ -19,6 +29,7 @@ class IssuedBook {
         this.issuedBy = user.name
         this.issuedDate = user.issuedDate
         this.returnDate = user.returnDate
+        this.fineForTheBook = returnDt <=  currentDt ? currentDt - returnDt * 50 : 0;
     }
 }
 

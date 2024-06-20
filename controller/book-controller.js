@@ -56,6 +56,43 @@ exports.getAllIssuedBooks = async(req, res) => {
     })
 }
 
+exports.getAllIssuedBooksWithFine = async (req, res) => {
+    const userIssuedBooks = await UserModal.find({
+        issuedBook: {$exists: true}
+    }).populate("issuedBook")
+
+    const issuedBook_s = userIssuedBooks.map( (usr) => {
+        
+        const getDaysFormDate = (data) => {
+            let date 
+            if(!data){
+                date = new Date()
+            } else {
+                date = new Date(data)
+            }
+
+            let days = Math.floor(date / (1000 * 60 * 60 * 24))
+            return days
+        }
+        let return_Date = getDaysFormDate(usr.returnDate)
+        let current_Date = getDaysFormDate()
+        
+        return new IssuedBook(usr, return_Date, current_Date)
+    } )
+
+    if(issuedBook_s.length === 0){
+        return res.status(404).json({
+            success: false,
+            message: "No User have Issued Book"
+        })
+    }
+    return res.status(200).json({
+        success: true,
+        message: "USer With Issued Book Here",
+        data: issuedBook_s
+    })
+}
+
 exports.addNewBook = async(req, res) => {
     const data = req.body
     if(!data || Object.keys(data).length == 0){
@@ -75,6 +112,32 @@ exports.addNewBook = async(req, res) => {
     })
 }
 
+exports.updateBookById = async(req, res) => {
+    const { id } = req.params,
+    data = req.body,
+    // This Below Code is only used for checking if data is their or not
+    book = await BookModal.findById(id)
+
+    if(!book){
+        return res.status(404).json({
+            success:false,
+            message:"No Such book is their"
+        })
+    }
+    // Above Code end here
+    // Main ligic is given below
+    const updateBookData = await BookModal.findOneAndUpdate({
+        _id : id,
+    }, data, {
+        new: true,
+    })
+
+    return res.status(200).json({
+        success:true,
+        message:"Book updated",
+        data:updateBookData
+    })
+}
 // module.exports = {
 //     getAllBooks,
 //     getSingleBookById
