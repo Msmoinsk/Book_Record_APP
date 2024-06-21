@@ -1,5 +1,4 @@
 const express = require("express")
-const { users } = require("../data/users.json")
 
 const router = express.Router()
 
@@ -10,6 +9,7 @@ const {
     createNewUser,
     deleteUserById,
     updateTheUserData,
+    getSubscriptionsDetails,
 } = require("../controller/user-controller")
 
 module.exports = router
@@ -168,78 +168,79 @@ router.delete("/:id", deleteUserById)
  * Access : Public
  * Parameter : ID {if in url we sent the ID then it will be the [para : ID]}
  */
-router.get("/subsciption-details/:id", (req, res) => {
-    const { id } = req.params,
-    user = users.find((usr) => usr.id === id)
+router.get("/subsciption-details/:id", getSubscriptionsDetails) 
+// router.get("/subsciption-details/:id", (req, res) => {
+//     const { id } = req.params,
+//     user = users.find((usr) => usr.id === id)
 
-    if(!user){
-        return res.status(404).json({
-            success:false,
-            message:"User with the ID did not exist"
-        })
-    }
-    const getDateInDays = (data) => {
-        let date 
-        if(!data){
-            date = new Date()
-        } else {
-            date = new Date(data)
-        }
+//     if(!user){
+//         return res.status(404).json({
+//             success:false,
+//             message:"User with the ID did not exist"
+//         })
+//     }
+//     const getDateInDays = (data) => {
+//         let date 
+//         if(!data){
+//             date = new Date()
+//         } else {
+//             date = new Date(data)
+//         }
 
-        let days = Math.floor(date / (1000 * 60 * 60 * 24))
-        return days
-    }
-    const subcriptionType = (day) => {
-        if(user.subscriptionType === "Basic"){
-            day = day + 90
-        } else if (user.subscriptionType === "Standard"){
-            day = day + 180
-        } else if(user.subscriptionType === "Premium"){
-            day = day + 365
-        }
-        return day
-    }
+//         let days = Math.floor(date / (1000 * 60 * 60 * 24))
+//         return days
+//     }
+//     const subcriptionType = (day) => {
+//         if(user.subscriptionType === "Basic"){
+//             day = day + 90
+//         } else if (user.subscriptionType === "Standard"){
+//             day = day + 180
+//         } else if(user.subscriptionType === "Premium"){
+//             day = day + 365
+//         }
+//         return day
+//     }
 
-    // Jan 1 1970 UTC     ->   Day you take the book { DUMMY VALUE}
-    // calculating the Renew Days : books Need to be renewed
-    let return_Date = getDateInDays(user.returnDate)   // end of return day
-    let currentDate = getDateInDays()   // Currently day you are at
+//     // Jan 1 1970 UTC     ->   Day you take the book { DUMMY VALUE}
+//     // calculating the Renew Days : books Need to be renewed
+//     let return_Date = getDateInDays(user.returnDate)   // end of return day
+//     let currentDate = getDateInDays()   // Currently day you are at
 
 
-    // User Subciption to access the book
-    let subscription_Dates = getDateInDays(user.subscriptionDate)   // The Day you Subscribe yourself
-    // subscriptionDates WILL carry the DAYS in number i.e Start to end amount of DAYS "173276"
-    // So when this is transfer in the { subcriptionType(subscriptionDates) } it send DAYS value "173276" 
-    let subcriptionExpire = subcriptionType(subscription_Dates) // The Day Your Subscription will end
+//     // User Subciption to access the book
+//     let subscription_Dates = getDateInDays(user.subscriptionDate)   // The Day you Subscribe yourself
+//     // subscriptionDates WILL carry the DAYS in number i.e Start to end amount of DAYS "173276"
+//     // So when this is transfer in the { subcriptionType(subscriptionDates) } it send DAYS value "173276" 
+//     let subcriptionExpire = subcriptionType(subscription_Dates) // The Day Your Subscription will end
 
-    // NOTE :- That the day Work like " [ month / days / years ] " 
+//     // NOTE :- That the day Work like " [ month / days / years ] " 
 
-    const data = {
-        ...user,
-        isSubcriptionExpired : subcriptionExpire <= currentDate,
-        daysLeftForExpiration : subcriptionExpire <= currentDate ? `Days Passed - ${currentDate - subcriptionExpire}` : subcriptionExpire - currentDate,
-        bookReturnDayLeft : return_Date < currentDate ? `Days Passed - ${currentDate - return_Date}` : return_Date  - currentDate,
-        fine : 
-            return_Date < currentDate 
-                ? subcriptionExpire <= currentDate 
-                    ? 100 
-                : 50 
-            : 0,
-            /**
-             * IF( returnDate < currentDate ){
-             *      IF ( subcriptionExpire <= currentDate ){
-             *          100
-             *      }
-             *      50
-             * } else {
-             *      0
-             * } 
-             * */ 
-    }
+//     const data = {
+//         ...user,
+//         isSubcriptionExpired : subcriptionExpire <= currentDate,
+//         daysLeftForExpiration : subcriptionExpire <= currentDate ? `Days Passed - ${currentDate - subcriptionExpire}` : subcriptionExpire - currentDate,
+//         bookReturnDayLeft : return_Date < currentDate ? `Days Passed - ${currentDate - return_Date}` : return_Date  - currentDate,
+//         fine : 
+//             return_Date < currentDate 
+//                 ? subcriptionExpire <= currentDate 
+//                     ? 100 
+//                 : 50 
+//             : 0,
+//             /**
+//              * IF( returnDate < currentDate ){
+//              *      IF ( subcriptionExpire <= currentDate ){
+//              *          100
+//              *      }
+//              *      50
+//              * } else {
+//              *      0
+//              * } 
+//              * */ 
+//     }
 
-    return res.status(200).json({
-        success:true,
-        message:"This is Subcription section",
-        data:data
-    })
-}) 
+//     return res.status(200).json({
+//         success:true,
+//         message:"This is Subcription section",
+//         data:data
+//     })
+// }) 
