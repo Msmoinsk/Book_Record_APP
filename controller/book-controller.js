@@ -117,7 +117,6 @@ exports.updateBookById = async(req, res) => {
     data = req.body,
     // This Below Code is only used for checking if data is their or not
     book = await BookModal.findById(id)
-
     if(!book){
         return res.status(404).json({
             success:false,
@@ -125,6 +124,7 @@ exports.updateBookById = async(req, res) => {
         })
     }
     // Above Code end here
+
     // Main ligic is given below
     const updateBookData = await BookModal.findOneAndUpdate({
         _id : id,

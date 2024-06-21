@@ -1,11 +1,6 @@
 const express = require("express")
-const { books } = require("../data/books.json"),
-{users} = require("../data/users.json")
 
 const router = express.Router()
-
-// Modal
-const { UserModal, BookModal } = require("../modals/index-modal")
 
 // Controllers
 const { 
@@ -144,7 +139,6 @@ router.get("/:id", getSingleBookById)
 //         data:book
 //     })
 // })
-
 
 /**
  * Route : /books
